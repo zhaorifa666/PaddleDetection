@@ -23,11 +23,11 @@ from ppdet.core.workspace import register, create
 from .meta_arch import BaseArch
 from ..keypoint_utils import transform_preds
 
-__all__ = ['Hrnet']
+__all__ = ['TopDownHrnet']
 
 
 @register
-class Hrnet(BaseArch):
+class TopDownHrnet(BaseArch):
     __category__ = 'architecture'
     __shared__ = ['data_format']
 
@@ -38,12 +38,13 @@ class Hrnet(BaseArch):
                  flip_perm=None,
                  data_format='NCHW'):
         """
-        HigherHrnet network, see https://arxiv.org/abs/
+        HRNnet network, see https://arxiv.org/abs/1902.09212
 
         Args:
             backbone (nn.Layer): backbone instance
-            hrhrnet_head (nn.Layer): keypoint_head instance
-            bbox_post_process (object): `BBoxPostProcess` instance
+            hrnet_head (nn.Layer): keypoint_head instance
+            post_process (object): `HrnetPostProcess` instance
+            flip_perm (list): The left-right joints exchange order list
             data_format (str): data format, NCHW or NHWC
         """
         super(Hrnet, self).__init__(data_format=data_format)
@@ -115,8 +116,8 @@ class HrnetPostProcess(object):
             preds: numpy.ndarray([batch_size, num_joints, 2]), keypoints coords
             maxvals: numpy.ndarray([batch_size, num_joints, 2]), the maximum confidence of the keypoints
         '''
-        assert isinstance(heatmaps, np.ndarray), \
-            'heatmaps should be numpy.ndarray'
+        assert isinstance(heatmaps,
+                          np.ndarray), 'heatmaps should be numpy.ndarray'
         assert heatmaps.ndim == 4, 'batch_images should be 4-ndim'
 
         batch_size = heatmaps.shape[0]
@@ -143,7 +144,7 @@ class HrnetPostProcess(object):
 
     def get_final_preds(self, heatmaps, center, scale):
         """the highest heatvalue location with a quarter offset in the
-        direction from the highest response to the second high- est response.
+        direction from the highest response to the second highest response.
 
         Args:
             heatmaps (numpy.ndarray): The predicted heatmaps

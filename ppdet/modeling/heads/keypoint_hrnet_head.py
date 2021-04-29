@@ -17,6 +17,7 @@ import paddle.nn as nn
 from ppdet.core.workspace import register
 from .. import layers as L
 
+
 @register
 class HrnetHead(nn.Layer):
     __inject__ = ['loss']
@@ -31,7 +32,7 @@ class HrnetHead(nn.Layer):
 
         Args:
             num_joints (int): number of keypoints
-            hrloss (object): HrHrnetLoss instance
+            hrloss (object): HrnetLoss instance
             width (int): hrnet channel width
             data_format (str): data format, NCHW or NHWC
         """
@@ -48,4 +49,3 @@ class HrnetHead(nn.Layer):
             return self.loss(hrnet_outputs, targets)
 
         return hrnet_outputs
-
