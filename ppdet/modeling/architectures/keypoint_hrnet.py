@@ -47,7 +47,7 @@ class TopDownHrnet(BaseArch):
             flip_perm (list): The left-right joints exchange order list
             data_format (str): data format, NCHW or NHWC
         """
-        super(Hrnet, self).__init__(data_format=data_format)
+        super(TopDownHrnet, self).__init__(data_format=data_format)
         self.backbone = backbone
         self.hrnet_head = hrnet_head
         self.post_process = HrnetPostProcess()

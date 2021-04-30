@@ -29,7 +29,7 @@ import math
 import copy
 import os
 
-from ...modeling.keypoint_utils import get_affine_mat_kernel, warp_affine_joints, get_affine_transform
+from ...modeling.keypoint_utils import get_affine_mat_kernel, warp_affine_joints, get_affine_transform, affine_transform
 from ppdet.core.workspace import serializable
 from ppdet.utils.logger import setup_logger
 logger = setup_logger(__name__)
@@ -39,7 +39,7 @@ registered_ops = []
 __all__ = [
     'RandomAffine', 'KeyPointFlip', 'TagGenerate', 'ToHeatmaps',
     'NormalizePermute', 'EvalAffine', 'RandomFlipScaleRotHalfBodyTrans',
-    'InputTransform', 'ToHeatmapsHrnet'
+    'InputAffine', 'ToHeatmapsHrnet'
 ]
 
 
@@ -437,7 +437,7 @@ class RandomFlipScaleRotHalfBodyTrans(object):
                  num_joints_half_body=8,
                  prob_half_body=0.3,
                  flip=True):
-        super(RandomAffineHrnet, self).__init__()
+        super(RandomFlipScaleRotHalfBodyTrans, self).__init__()
         self.trainsize = trainsize
         self.upper_body_ids = upper_body_ids
         self.flip_pairs = flip_pairs
